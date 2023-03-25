@@ -41,7 +41,8 @@ public class StartUpPage extends JFrame {
         plannerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PlannerPage();
+                Day[] days = plannerData.getPlannerData();
+                new PlannerPage(days);
                 dispose();
             }
         });
