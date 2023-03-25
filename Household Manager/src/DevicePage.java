@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
@@ -92,10 +94,16 @@ public class DevicePage extends JFrame {
         this.setTitle("Devices");
         this.setBounds(0, 0, 700, 600);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.getContentPane().setLayout(null);
         this.setBackground(Color.BLACK);
         this.setResizable(false);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new StartUpPage();
+            }
+        });
 
         view = new JTextArea();
         view.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -171,7 +179,7 @@ public class DevicePage extends JFrame {
                 String name = JOptionPane.showInputDialog(new JFrame(), "Name of device:");
                 String status = "OFF";
                 LocalDateTime localDateTime = LocalDateTime.now();
-                if(!name.toString().equals("")) {
+                if(name!=null && !name.toString().equals("")) {
                     AddDevice(name, status, localDateTime);
                     Update();
                     Add();
@@ -183,8 +191,5 @@ public class DevicePage extends JFrame {
         });
         this.getContentPane().add(add);
         this.setVisible(true);
-    }
-    public static void main(String[] args) {
-        DevicePage devicePage = new DevicePage();
     }
 }

@@ -13,8 +13,15 @@ public class PlannerPage extends JFrame {
     private JButton addButton;
     private JButton removeButton;
     private JLabel label;
+    private Day[] emptySchedule = new Day[7];
     PlannerPage(Day[] schedule){
         createPlanner(this,schedule);
+    }
+    PlannerPage(){
+        for(int i=0;i<7;i++){
+            emptySchedule[i] = new Day();
+        }
+        createPlanner(this,emptySchedule);
     }
     private void createPlanner(JFrame planner, Day[] schedule){
 
@@ -39,26 +46,18 @@ public class PlannerPage extends JFrame {
         page.add(content, BorderLayout.CENTER);
 
         planner.add(page);
-        planner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        planner.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         planner.setExtendedState(JFrame.MAXIMIZED_BOTH);
         planner.setLocationRelativeTo(null);
         planner.setVisible(true);
+        planner.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new StartUpPage();
+            }
+        });
     }
     private void initializeTop(){
-        addButton = new JButton("Add activity");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        removeButton = new JButton("Remove activity");
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
         LocalDate monday = LocalDate.now();
         while(monday.getDayOfWeek() != DayOfWeek.MONDAY){
@@ -76,9 +75,6 @@ public class PlannerPage extends JFrame {
         label = new JLabel(weekStart + " - " + weekEnd, SwingConstants.CENTER);
 
         label.setFont(new Font(label.getFont().getName(), Font.PLAIN,30));
-
-        top.add(addButton, BorderLayout.WEST);
-        top.add(removeButton, BorderLayout.EAST);
         top.add(label, BorderLayout.CENTER);
 
     }
