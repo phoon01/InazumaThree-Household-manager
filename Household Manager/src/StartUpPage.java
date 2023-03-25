@@ -9,6 +9,8 @@ public class StartUpPage extends JFrame {
     private JButton productsButton;
     private databaseConnectionPlanner plannerData = new databaseConnectionPlanner();
     private databaseConnectionDevices devicesData =new databaseConnectionDevices();
+    private ImageIcon image;
+    private JLabel labelImage;
 
 
     StartUpPage() {
@@ -24,8 +26,7 @@ public class StartUpPage extends JFrame {
         deviceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Device[] devices = devicesData.getDeviceData();
-                new DevicePage(devices);
+                new DevicePage();
                 dispose();
             }
         });
@@ -39,8 +40,7 @@ public class StartUpPage extends JFrame {
         plannerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Day[] schedule = plannerData.getPlannerData();
-                new PlannerPage(schedule);
+                new PlannerPage();
                 dispose();
             }
         });

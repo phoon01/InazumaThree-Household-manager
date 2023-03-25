@@ -4,10 +4,7 @@ import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 public class CookingPage extends JFrame {
     private JButton add;
@@ -15,11 +12,13 @@ public class CookingPage extends JFrame {
     private JComboBox products;
     private JTextArea display;
     private Cooking[] cookings;
+    private ImageIcon image;
+    private JLabel labelImage;
 
     public void Add() {
         this.products.removeAllItems();
 
-        for(int i = 0; i < this.cookings.length; ++i) {
+        for (int i = 0; i < this.cookings.length; ++i) {
             if (this.cookings[i] != null) {
                 System.out.println(this.cookings[i].toString());
                 this.products.addItem(this.cookings[i].getName());
@@ -31,7 +30,7 @@ public class CookingPage extends JFrame {
     public void Update() {
         this.display.setText("");
 
-        for(int i = 0; i < this.cookings.length; ++i) {
+        for (int i = 0; i < this.cookings.length; ++i) {
             if (this.cookings[i] != null) {
                 System.out.println(this.cookings[i].toString());
                 JTextArea var10000 = this.display;
@@ -43,15 +42,15 @@ public class CookingPage extends JFrame {
     }
 
     public void Refresh() {
-        this.display.setText((String)null);
+        this.display.setText((String) null);
     }
 
     public CookingPage() {
         this.setTitle("COOKING PAGE");
         this.setBounds(0, 0, 813, 437);
-        this.getContentPane().setLayout((LayoutManager)null);
+        this.getContentPane().setLayout((LayoutManager) null);
         this.getContentPane().setBackground(new Color(0, 255, 255));
-        this.setLocationRelativeTo((Component)null);
+        this.setLocationRelativeTo((Component) null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.cookings = new Cooking[101];
@@ -83,7 +82,7 @@ public class CookingPage extends JFrame {
         this.display.setFont(new Font("Times New Roman", 0, 25));
         this.display.setBounds(0, 0, 600, 400);
         this.Update();
-        this.display.setBackground(new Color(180, 224, 240));
+        this.display.setBackground(new Color(14, 126, 137));
         this.getContentPane().add(this.display);
         this.Refresh();
 
@@ -94,6 +93,11 @@ public class CookingPage extends JFrame {
                 dispose();
             }
         });
+
+        image = new ImageIcon(getClass().getResource("chef.png"));
+        labelImage = new JLabel(image);
+        labelImage.setBounds(600,130,200,200);
+        getContentPane().add(labelImage);
 
         this.setVisible(true);
     }
