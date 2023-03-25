@@ -151,10 +151,9 @@ public class PlannerPage extends JFrame {
 
             }
             String changeAct = JOptionPane.showInputDialog(new JFrame(), message);
-            if(!changeAct.equals("")) {
+            if(changeAct!=null) {
                 schedule[day].text[hour] = changeAct;
             }
-            JOptionPane.showMessageDialog(new JFrame(),"Empty field!","Alert",JOptionPane.WARNING_MESSAGE);
         }
         else if(result==JOptionPane.NO_OPTION){
             schedule[day].text[hour]="";
