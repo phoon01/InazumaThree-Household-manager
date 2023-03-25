@@ -50,7 +50,8 @@ public class StartUpPage extends JFrame {
         productsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new CookingPage();
+                dispose();
             }
         });
         productsButton.setSize(30, 30);
