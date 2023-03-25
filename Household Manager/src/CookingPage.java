@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.LayoutManager;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -50,7 +52,7 @@ public class CookingPage extends JFrame {
         this.getContentPane().setLayout((LayoutManager)null);
         this.getContentPane().setBackground(new Color(0, 255, 255));
         this.setLocationRelativeTo((Component)null);
-        this.setDefaultCloseOperation(3);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.cookings = new Cooking[101];
         this.cookings[0] = new Cooking();
@@ -84,6 +86,14 @@ public class CookingPage extends JFrame {
         this.display.setBackground(new Color(180, 224, 240));
         this.getContentPane().add(this.display);
         this.Refresh();
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new StartUpPage();
+                dispose();
+            }
+        });
 
         this.setVisible(true);
     }

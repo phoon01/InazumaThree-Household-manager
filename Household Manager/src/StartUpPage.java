@@ -13,7 +13,7 @@ public class StartUpPage extends JFrame {
         this.setTitle("HOUSEHOLD MANAGER");
         this.setBounds(0, 0, 600, 400);
         this.getContentPane().setLayout(null);
-        this.getContentPane().setBackground(new Color(0, 255, 255));
+        this.getContentPane().setBackground(new Color(128,128,128));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -43,7 +43,7 @@ public class StartUpPage extends JFrame {
         plannerButton.setSize(30, 30);
         plannerButton.setBounds(240, 160, 100, 50);
         plannerButton.setFont(new Font("Times New Roman", Font.PLAIN, 10));
-        plannerButton.setBackground(new Color(255, 255, 255));
+        plannerButton.setBackground(new Color(255,255,255));
         getContentPane().add(plannerButton);
 
         productsButton = new JButton("PRODUCTS");
