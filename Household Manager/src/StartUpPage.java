@@ -26,7 +26,8 @@ public class StartUpPage extends JFrame {
         deviceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DevicePage();
+                Device[] devices = devicesData.getDeviceData();
+                new DevicePage(devices);
                 dispose();
             }
         });
