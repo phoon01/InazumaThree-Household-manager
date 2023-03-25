@@ -14,6 +14,7 @@ public class PlannerPage extends JFrame {
     private JButton removeButton;
     private JLabel label;
     private Day[] emptySchedule = new Day[7];
+    private databaseConnectionPlanner plannerData = new databaseConnectionPlanner();
     PlannerPage(Day[] schedule){
         createPlanner(this,schedule);
     }
@@ -53,6 +54,7 @@ public class PlannerPage extends JFrame {
         planner.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                plannerData.setPlannerData(schedule);
                 new StartUpPage();
             }
         });

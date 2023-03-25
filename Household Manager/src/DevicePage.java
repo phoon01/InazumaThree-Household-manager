@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
+import java.util.Objects;
 
 public class DevicePage extends JFrame {
     private JButton add;
@@ -16,7 +17,8 @@ public class DevicePage extends JFrame {
     private JComboBox chooseDevice;
     private JTextArea view;
     private JScrollPane scrollPane;
-    private Device[] devices;
+    private Device[] memory;
+    private databaseConnectionDevices devicesData = new databaseConnectionDevices();
     String text = "a\n\n\n\n\n\n\n\n\naaaa\n\n\n\n\n1\n\n\n\n\n\n\n\n\n\n234";
     public static int SearchByName(String txt, Device[] devices){
         for(int i = 0; i < devices.length; i++){
@@ -27,69 +29,50 @@ public class DevicePage extends JFrame {
         return 0;
     }
 
-    public void Update(){
+    public void Update(Device[] devices){
         this.view.setText("");
-        for(int i = 0; i < this.devices.length; i++){
-            if(devices[i] != null) {
-                System.out.println(this.devices[i].toString());
-                this.view.setText(this.view.getText() + this.devices[i].toString());
+        for (Device device : devices) {
+            if (device != null) {
+                //System.out.println(this.devices[i].toString());
+                this.view.setText(this.view.getText() + device.toString());
             }
         }
     }
-    public void Add(){
+    public void Add(Device[] devices){
         this.chooseDevice.removeAllItems();
-        for(int i = 0; i < this.devices.length; i++){
+        for(int i = 0; i < devices.length; i++){
             if(devices[i] != null) {
-                System.out.println(this.devices[i].toString());
+                //System.out.println(this.devices[i].toString());
                 this.chooseDevice.addItem(devices[i].getName());
             }
         }
+        memory=devices;
     }
 
-    public void AddDevice(String name, String status, LocalDateTime localDateTime){
-        for(int i = 0; i < this.devices.length; i++) {
-            if(this.devices[i] == null) {
-                this.devices[i] = new Device();
-                this.devices[i].setDateTime(localDateTime);
-                this.devices[i].setName(name);
-                this.devices[i].setStatus(status);
-                i = 1000;
+    public void AddDevice(Device device,Device[] devices){
+        Device[] newDevice = new Device[devices.length+1];
+        for(int i = 0; i < devices.length; i++) {
+            newDevice[i] = devices[i];
+        }
+        newDevice[devices.length]=device;
+        memory=newDevice;
+    }
+
+    public void RemoveDevice(String name,Device[] devices){
+        Device[] newDevice = new Device[devices.length-1];
+        int k=0;
+        for(Device aux : devices){
+            if(!Objects.equals(aux.getName(), name)){
+                newDevice[k]=aux;
+                k++;
             }
         }
+        memory=newDevice;
     }
 
-    public void RemoveDevice(String name){
-        int indexToRemove = SearchByName(name, this.devices);
-        for(int i = indexToRemove; i < this.devices.length; i++){
-            if(this.devices[i + i] == null){
-                this.devices[i] = null;
-                i = 1000;
-            }
-            else{
-                this.devices[i] = this.devices[i + 1];
-            }
-        }
-    }
+    public DevicePage(Device[] devices){
 
-    public DevicePage(){
-        this.devices = new Device[101];
-        devices[0] = new Device();
-        devices[0].setName("Samsung TV");
-        devices[0].setStatus("ON");
-        devices[0].setDateTime(LocalDateTime.now());
-        devices[1] = new Device();
-        devices[1].setName("Coffee Machine");
-        devices[1].setStatus("OFF");
-        devices[1].setDateTime(LocalDateTime.now());
-        devices[2] = new Device();
-        devices[2].setName("PC");
-        devices[2].setStatus("ON");
-        devices[2].setDateTime(LocalDateTime.now());
-        devices[3] = new Device();
-        devices[3].setName("Bosch Fridge");
-        devices[3].setStatus("ON");
-        devices[3].setDateTime(LocalDateTime.now());
-
+        memory=devices;
 
         this.setTitle("Devices");
         this.setBounds(0, 0, 700, 600);
@@ -101,6 +84,7 @@ public class DevicePage extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                devicesData.setDeviceData(memory);
                 new StartUpPage();
             }
         });
@@ -108,7 +92,7 @@ public class DevicePage extends JFrame {
         view = new JTextArea();
         view.setFont(new Font("Times New Roman", Font.PLAIN, 25));
         view.setBounds(0, 0, 700, 400);
-        Update();
+        Update(devices);
         view.setBackground(new Color(180, 224, 240));
         this.getContentPane().add(view);
 
@@ -120,7 +104,7 @@ public class DevicePage extends JFrame {
         chooseDevice.setBounds(0, 400, 400, 50);
         chooseDevice.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         chooseDevice.setBackground(new Color(225, 225, 250));
-        Add();
+        Add(devices);
         this.getContentPane().add(chooseDevice);
 
         on = new JButton("ON");
@@ -130,10 +114,10 @@ public class DevicePage extends JFrame {
         on.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int device = SearchByName(chooseDevice.getSelectedItem().toString(), devices);
-                devices[device].setStatus("ON");
-                devices[device].setDateTime(LocalDateTime.now());
-                Update();
+                int device = SearchByName(chooseDevice.getSelectedItem().toString(), memory);
+                memory[device].setStatus("ON");
+                memory[device].setDateTime(LocalDateTime.now());
+                Update(memory);
             }
         });
         this.getContentPane().add(on);
@@ -145,11 +129,11 @@ public class DevicePage extends JFrame {
         off.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int device = SearchByName(chooseDevice.getSelectedItem().toString(), devices);
-                devices[device].setStatus("OFF");
-                devices[device].setDateTime(LocalDateTime.now());
+                int device = SearchByName(chooseDevice.getSelectedItem().toString(), memory);
+                memory[device].setStatus("OFF");
+                memory[device].setDateTime(LocalDateTime.now());
 
-                Update();
+                Update(memory);
             }
         });
         this.getContentPane().add(off);
@@ -162,9 +146,9 @@ public class DevicePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = chooseDevice.getSelectedItem().toString();
-                RemoveDevice(name);
-                Update();
-                Add();
+                RemoveDevice(name,memory);
+                Update(memory);
+                Add(memory);
             }
         });
         this.getContentPane().add(remove);
@@ -180,9 +164,13 @@ public class DevicePage extends JFrame {
                 String status = "OFF";
                 LocalDateTime localDateTime = LocalDateTime.now();
                 if(name!=null && !name.toString().equals("")) {
-                    AddDevice(name, status, localDateTime);
-                    Update();
-                    Add();
+                    Device newDevice = new Device();
+                    newDevice.setName(name);
+                    newDevice.setStatus(status);
+                    newDevice.setDateTime(localDateTime);
+                    AddDevice(newDevice,memory);
+                    Update(memory);
+                    Add(memory);
                 }
                 else{
                     JOptionPane.showMessageDialog(new JDialog(), "EMPTY FIELD!", "ERROR!", JOptionPane.WARNING_MESSAGE);
