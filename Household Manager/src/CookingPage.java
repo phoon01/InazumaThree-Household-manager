@@ -4,10 +4,7 @@ import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 public class CookingPage extends JFrame {
     private JButton add;
@@ -15,6 +12,8 @@ public class CookingPage extends JFrame {
     private JComboBox products;
     private JTextArea display;
     private Cooking[] cookings;
+    private ImageIcon image;
+    private JLabel labelImage;
 
     public void Add() {
         this.products.removeAllItems();
@@ -83,7 +82,7 @@ public class CookingPage extends JFrame {
         this.display.setFont(new Font("Times New Roman", 0, 25));
         this.display.setBounds(0, 0, 600, 400);
         this.Update();
-        this.display.setBackground(new Color(180, 224, 240));
+        this.display.setBackground(new Color(14, 126, 137));
         this.getContentPane().add(this.display);
         this.Refresh();
 
@@ -94,6 +93,11 @@ public class CookingPage extends JFrame {
                 dispose();
             }
         });
+
+        image = new ImageIcon(getClass().getResource("chef.png"));
+        labelImage = new JLabel(image);
+        labelImage.setBounds(600,130,200,200);
+        getContentPane().add(labelImage);
 
         this.setVisible(true);
     }
