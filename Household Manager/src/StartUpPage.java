@@ -7,6 +7,8 @@ public class StartUpPage extends JFrame {
     private JButton deviceButton;
     private JButton plannerButton;
     private JButton productsButton;
+    private ImageIcon image;
+    private JLabel labelImage;
 
 
     StartUpPage() {
@@ -60,6 +62,10 @@ public class StartUpPage extends JFrame {
         productsButton.setBackground(new Color(255, 255, 255));
         getContentPane().add(productsButton);
 
+        image = new ImageIcon(getClass().getResource("house.png"));
+        labelImage = new JLabel(image);
+        labelImage.setBounds(0,70,200,200);
+        getContentPane().add(labelImage);
         setVisible(true);
     }
 

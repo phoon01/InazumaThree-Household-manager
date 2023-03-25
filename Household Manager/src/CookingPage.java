@@ -19,7 +19,7 @@ public class CookingPage extends JFrame {
     public void Add() {
         this.products.removeAllItems();
 
-        for(int i = 0; i < this.cookings.length; ++i) {
+        for (int i = 0; i < this.cookings.length; ++i) {
             if (this.cookings[i] != null) {
                 System.out.println(this.cookings[i].toString());
                 this.products.addItem(this.cookings[i].getName());
@@ -31,7 +31,7 @@ public class CookingPage extends JFrame {
     public void Update() {
         this.display.setText("");
 
-        for(int i = 0; i < this.cookings.length; ++i) {
+        for (int i = 0; i < this.cookings.length; ++i) {
             if (this.cookings[i] != null) {
                 System.out.println(this.cookings[i].toString());
                 JTextArea var10000 = this.display;
@@ -43,15 +43,15 @@ public class CookingPage extends JFrame {
     }
 
     public void Refresh() {
-        this.display.setText((String)null);
+        this.display.setText((String) null);
     }
 
     public CookingPage() {
         this.setTitle("COOKING PAGE");
         this.setBounds(0, 0, 813, 437);
-        this.getContentPane().setLayout((LayoutManager)null);
+        this.getContentPane().setLayout((LayoutManager) null);
         this.getContentPane().setBackground(new Color(0, 255, 255));
-        this.setLocationRelativeTo((Component)null);
+        this.setLocationRelativeTo((Component) null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.cookings = new Cooking[101];
