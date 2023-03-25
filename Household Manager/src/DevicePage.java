@@ -34,6 +34,40 @@ public class DevicePage extends JFrame {
             }
         }
     }
+    public void Add(){
+        this.chooseDevice.removeAllItems();
+        for(int i = 0; i < this.devices.length; i++){
+            if(devices[i] != null) {
+                System.out.println(this.devices[i].toString());
+                this.chooseDevice.addItem(devices[i].getName());
+            }
+        }
+    }
+
+    public void AddDevice(String name, String status, LocalDateTime localDateTime){
+        for(int i = 0; i < this.devices.length; i++) {
+            if(this.devices[i] == null) {
+                this.devices[i] = new Device();
+                this.devices[i].setDateTime(localDateTime);
+                this.devices[i].setName(name);
+                this.devices[i].setStatus(status);
+                i = 1000;
+            }
+        }
+    }
+
+    public void RemoveDevice(String name){
+        int indexToRemove = SearchByName(name, this.devices);
+        for(int i = indexToRemove; i < this.devices.length; i++){
+            if(this.devices[i + i] == null){
+                this.devices[i] = null;
+                i = 1000;
+            }
+            else{
+                this.devices[i] = this.devices[i + 1];
+            }
+        }
+    }
 
     public DevicePage(){
         this.devices = new Device[101];
@@ -57,8 +91,11 @@ public class DevicePage extends JFrame {
 
         this.setTitle("Devices");
         this.setBounds(0, 0, 700, 600);
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setLayout(null);
+        this.setBackground(Color.BLACK);
+        this.setResizable(false);
 
         view = new JTextArea();
         view.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -75,10 +112,7 @@ public class DevicePage extends JFrame {
         chooseDevice.setBounds(0, 400, 400, 50);
         chooseDevice.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         chooseDevice.setBackground(new Color(225, 225, 250));
-        chooseDevice.addItem(devices[0].getName());
-        chooseDevice.addItem(devices[1].getName());
-        chooseDevice.addItem(devices[2].getName());
-        chooseDevice.addItem(devices[3].getName());
+        Add();
         this.getContentPane().add(chooseDevice);
 
         on = new JButton("ON");
@@ -91,7 +125,6 @@ public class DevicePage extends JFrame {
                 int device = SearchByName(chooseDevice.getSelectedItem().toString(), devices);
                 devices[device].setStatus("ON");
                 devices[device].setDateTime(LocalDateTime.now());
-
                 Update();
             }
         });
@@ -117,12 +150,37 @@ public class DevicePage extends JFrame {
         remove.setFont(new Font("Times New Roman", Font.PLAIN, 10));
         remove.setBounds(600, 400, 100, 50);
         remove.setBackground(new Color(225, 225, 250));
+        remove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = chooseDevice.getSelectedItem().toString();
+                RemoveDevice(name);
+                Update();
+                Add();
+            }
+        });
         this.getContentPane().add(remove);
 
         add = new JButton("Add Device");
         add.setFont(new Font("Times New Roman", Font.PLAIN, 30));
         add.setBounds(0, 450, 700, 111);
         add.setBackground(new Color(180, 224, 240));
+        add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = JOptionPane.showInputDialog(new JFrame(), "Name of device:");
+                String status = "OFF";
+                LocalDateTime localDateTime = LocalDateTime.now();
+                if(!name.toString().equals("")) {
+                    AddDevice(name, status, localDateTime);
+                    Update();
+                    Add();
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JDialog(), "EMPTY FIELD!", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
         this.getContentPane().add(add);
         this.setVisible(true);
     }
