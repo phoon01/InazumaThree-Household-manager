@@ -39,4 +39,8 @@ public class StartUpPage extends JFrame {
 
         setVisible(true);
     }
+
+    public StartUpPage(){
+        
+    }
 }
