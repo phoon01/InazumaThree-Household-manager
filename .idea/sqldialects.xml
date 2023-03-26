@@ -3,5 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/Household Manager/src/databaseConnectionDevices.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/Household Manager/src/databaseConnectionPlanner.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/Household Manager/src/databaseConnectionProducts.java" dialect="GenericSQL" />
   </component>
 </project>

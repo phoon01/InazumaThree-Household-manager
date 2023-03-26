@@ -9,6 +9,7 @@ public class StartUpPage extends JFrame {
     private JButton productsButton;
     private databaseConnectionPlanner plannerData = new databaseConnectionPlanner();
     private databaseConnectionDevices devicesData =new databaseConnectionDevices();
+    private databaseConnectionProducts productsData = new databaseConnectionProducts();
     private ImageIcon image;
     private JLabel labelImage;
 
@@ -56,7 +57,8 @@ public class StartUpPage extends JFrame {
         productsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CookingPage();
+                Cooking[] cookings = productsData.getCookingData();
+                new CookingPage(cookings);
                 dispose();
             }
         });
