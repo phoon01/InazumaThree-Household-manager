@@ -37,3 +37,4 @@ public class Device {
         return this.name + "    " + this.status + "    " + this.dateTime.getMonth().toString() + "/" + this.dateTime.getDayOfMonth() + "-" + this.dateTime.getHour() + ":" + this.dateTime.getMinute() + "\n";
     }
 }
+
