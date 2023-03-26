@@ -67,7 +67,7 @@ public class CookingPage extends JFrame {
     public CookingPage(Cooking[] cooking) {
         this.cookings = cooking;
         this.setTitle("COOKING PAGE");
-        this.setBounds(0, 0, 813, 437);
+        this.setBounds(0, 0, 400, 775);
         this.getContentPane().setLayout((LayoutManager) null);
         this.getContentPane().setBackground(new Color(0, 255, 255));
         this.setLocationRelativeTo((Component) null);
@@ -103,10 +103,9 @@ public class CookingPage extends JFrame {
                 }
             }
         });
-        this.add.setBounds(600, 50, 200, 50);
+        this.add.setBounds(100, 300, 200, 50);
         this.add.setFont(new Font("Times New Roman", 0, 20));
         this.add.setBackground(new Color(255, 255, 255));
-        this.getContentPane().add(this.add);
 
         this.generate = new JButton("GENERATE");
         this.generate.addActionListener(new ActionListener() {
@@ -137,13 +136,12 @@ public class CookingPage extends JFrame {
             }
 
         });
-        this.generate.setBounds(600, 350, 200, 50);
+        this.generate.setBounds(100, 675, 200, 50);
         this.generate.setFont(new Font("Times New Roman", 0, 20));
         this.generate.setBackground(new Color(255, 255, 255));
-        this.getContentPane().add(this.generate);
 
         this.products = new JComboBox();
-        this.products.setBounds(600, 0, 200, 50);
+        this.products.setBounds(100, 225, 200, 50);
         this.products.setBackground(new Color(255, 255, 255));
         this.products.setFont(new Font("Times New Roman", 0, 20));
         Add();
@@ -151,10 +149,10 @@ public class CookingPage extends JFrame {
 
         this.display = new JTextArea();
         this.display.setFont(new Font("Times New Roman", 0, 25));
-        this.display.setBounds(0, 0, 600, 400);
+        //this.display.setBounds(100, 450, 200, 200);
         this.display.setBackground(new Color(204, 204, 255));
-        this.getContentPane().add(this.display);
-        this.Refresh();
+        JScrollPane scrollPane = new JScrollPane(this.display);
+        scrollPane.setBounds(100, 450, 200, 200);
 
 
         this.addWindowListener(new WindowAdapter() {
@@ -168,8 +166,7 @@ public class CookingPage extends JFrame {
 
         image = new ImageIcon(getClass().getResource("chef.png"));
         labelImage = new JLabel(image);
-        labelImage.setBounds(600, 150, 200, 200);
-        getContentPane().add(labelImage);
+        labelImage.setBounds(100, 0, 200, 200);
 
         JButton addToList = new JButton("Add to list");
         addToList.addActionListener(new ActionListener() {
@@ -183,10 +180,17 @@ public class CookingPage extends JFrame {
                 searchWords.put(ing, 1);
             }
         });
-        addToList.setBounds(600, 100, 200, 50);
+        addToList.setBounds(100, 375, 200, 50);
         addToList.setFont(new Font("Times New Roman", 0, 20));
         addToList.setBackground(new Color(255, 255, 255));
-        this.getContentPane().add(addToList);
+
+        add(labelImage);
+        add(products);
+        add(add);
+        add(addToList);
+        add(scrollPane);
+        add(generate);
+
 
         this.setVisible(true);
     }
