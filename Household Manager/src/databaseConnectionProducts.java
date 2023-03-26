@@ -10,46 +10,46 @@ public class databaseConnectionProducts {
     private Connection connection;
     private Statement statement;
 
-    databaseConnectionProducts(){
+    databaseConnectionProducts() {
 
     }
 
-    public Cooking[] getCookingData(){
+    public Cooking[] getCookingData() {
         Cooking[] cookings = new Cooking[0];
 
-        try{
-            connection = DriverManager.getConnection(url,user,pass);
+        try {
+            connection = DriverManager.getConnection(url, user, pass);
             String selectQuery = "select * from " + tableName;
             statement = connection.createStatement();
             statement.execute(selectQuery);
 
             ResultSet resultSet = statement.getResultSet();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
 
                 String name = resultSet.getString("name");
                 int expireYear = resultSet.getInt("expireYear");
                 int expireMonth = resultSet.getInt("expireMonth");
                 int expireDay = resultSet.getInt("expireDay");
 
-                Cooking newCooking = new Cooking(name,expireDay,expireYear,expireMonth);
+                Cooking newCooking = new Cooking(name, expireDay, expireYear, expireMonth);
 
                 //System.out.printf(newCooking.toString());
 
-                cookings = addCooking(newCooking,cookings);
+                cookings = addCooking(newCooking, cookings);
 
             }
 
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
         return cookings;
     }
-    private Cooking[] addCooking(Cooking add, Cooking[] cookings){
-        Cooking[] newCooking = new Cooking[cookings.length+1];
-        int k=0;
-        for(Cooking aux : cookings){
+
+    private Cooking[] addCooking(Cooking add, Cooking[] cookings) {
+        Cooking[] newCooking = new Cooking[cookings.length + 1];
+        int k = 0;
+        for (Cooking aux : cookings) {
             newCooking[k] = aux;
             k++;
         }
@@ -57,13 +57,13 @@ public class databaseConnectionProducts {
         return newCooking;
     }
 
-    public void setCookingData(Cooking[] cookings){
-        try{
-            connection = DriverManager.getConnection(url,user,pass);
+    public void setCookingData(Cooking[] cookings) {
+        try {
+            connection = DriverManager.getConnection(url, user, pass);
             String deleteQuery = "delete from " + tableName;
             statement = connection.createStatement();
             statement.execute(deleteQuery);
-            for(Cooking aux : cookings){
+            for (Cooking aux : cookings) {
                 //System.out.println(aux.toString());
                 //System.out.println("da");
                 String insertQuery = "insert into " + tableName +
@@ -73,8 +73,7 @@ public class databaseConnectionProducts {
                         "','" + aux.getExpireDay() + "')";
                 statement.execute(insertQuery);
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }

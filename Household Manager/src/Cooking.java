@@ -8,7 +8,8 @@ public class Cooking {
         this.name = "";
         expireDay = expireMonth = expireYear = 0;
     }
-    public Cooking(String name, int expireDay, int expireYear, int expireMonth){
+
+    public Cooking(String name, int expireDay, int expireYear, int expireMonth) {
         this.name = name;
         this.expireMonth = expireMonth;
         this.expireYear = expireYear;

@@ -20,16 +20,17 @@ public class DevicePage extends JFrame {
     private Device[] memory;
     private databaseConnectionDevices devicesData = new databaseConnectionDevices();
     String text = "a\n\n\n\n\n\n\n\n\naaaa\n\n\n\n\n1\n\n\n\n\n\n\n\n\n\n234";
-    public static int SearchByName(String txt, Device[] devices){
-        for(int i = 0; i < devices.length; i++){
-            if(devices[i].getName().equals(txt)){
+
+    public static int SearchByName(String txt, Device[] devices) {
+        for (int i = 0; i < devices.length; i++) {
+            if (devices[i].getName().equals(txt)) {
                 return i;
             }
         }
         return 0;
     }
 
-    public void Update(Device[] devices){
+    public void Update(Device[] devices) {
         this.view.setText("");
         for (Device device : devices) {
             if (device != null) {
@@ -38,41 +39,42 @@ public class DevicePage extends JFrame {
             }
         }
     }
-    public void Add(Device[] devices){
+
+    public void Add(Device[] devices) {
         this.chooseDevice.removeAllItems();
-        for(int i = 0; i < devices.length; i++){
-            if(devices[i] != null) {
+        for (int i = 0; i < devices.length; i++) {
+            if (devices[i] != null) {
                 //System.out.println(this.devices[i].toString());
                 this.chooseDevice.addItem(devices[i].getName());
             }
         }
-        memory=devices;
+        memory = devices;
     }
 
-    public void AddDevice(Device device,Device[] devices){
-        Device[] newDevice = new Device[devices.length+1];
-        for(int i = 0; i < devices.length; i++) {
+    public void AddDevice(Device device, Device[] devices) {
+        Device[] newDevice = new Device[devices.length + 1];
+        for (int i = 0; i < devices.length; i++) {
             newDevice[i] = devices[i];
         }
-        newDevice[devices.length]=device;
-        memory=newDevice;
+        newDevice[devices.length] = device;
+        memory = newDevice;
     }
 
-    public void RemoveDevice(String name,Device[] devices){
-        Device[] newDevice = new Device[devices.length-1];
-        int k=0;
-        for(Device aux : devices){
-            if(!Objects.equals(aux.getName(), name)){
-                newDevice[k]=aux;
+    public void RemoveDevice(String name, Device[] devices) {
+        Device[] newDevice = new Device[devices.length - 1];
+        int k = 0;
+        for (Device aux : devices) {
+            if (!Objects.equals(aux.getName(), name)) {
+                newDevice[k] = aux;
                 k++;
             }
         }
-        memory=newDevice;
+        memory = newDevice;
     }
 
-    public DevicePage(Device[] devices){
+    public DevicePage(Device[] devices) {
 
-        memory=devices;
+        memory = devices;
 
         this.setTitle("Devices");
         this.setBounds(0, 0, 700, 600);
@@ -97,7 +99,7 @@ public class DevicePage extends JFrame {
         this.getContentPane().add(view);
 
         scrollPane = new JScrollPane(view);
-        scrollPane.setBounds(0, 0, 700,400);
+        scrollPane.setBounds(0, 0, 700, 400);
         this.getContentPane().add(scrollPane);
 
         chooseDevice = new JComboBox();
@@ -146,7 +148,7 @@ public class DevicePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = chooseDevice.getSelectedItem().toString();
-                RemoveDevice(name,memory);
+                RemoveDevice(name, memory);
                 Update(memory);
                 Add(memory);
             }
@@ -163,16 +165,15 @@ public class DevicePage extends JFrame {
                 String name = JOptionPane.showInputDialog(new JFrame(), "Name of device:");
                 String status = "OFF";
                 LocalDateTime localDateTime = LocalDateTime.now();
-                if(name!=null && !name.toString().equals("")) {
+                if (name != null && !name.toString().equals("")) {
                     Device newDevice = new Device();
                     newDevice.setName(name);
                     newDevice.setStatus(status);
                     newDevice.setDateTime(localDateTime);
-                    AddDevice(newDevice,memory);
+                    AddDevice(newDevice, memory);
                     Update(memory);
                     Add(memory);
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(new JDialog(), "EMPTY FIELD!", "ERROR!", JOptionPane.WARNING_MESSAGE);
                 }
             }

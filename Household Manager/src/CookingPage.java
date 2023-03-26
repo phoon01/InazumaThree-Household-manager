@@ -1,37 +1,62 @@
+import org.jsoup.nodes.Element;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 
 public class CookingPage extends JFrame {
     private JButton add;
     private JButton generate;
-    private JComboBox products = new JComboBox<>();
+    private JComboBox products;
     private JTextArea display;
     private Cooking[] cookings;
     private ImageIcon image;
     private JLabel labelImage;
+    private Map<String, Integer> searchWords = new HashMap<>();
     private databaseConnectionProducts productsData = new databaseConnectionProducts();
 
     public void Add() {
         this.products.removeAllItems();
 
-        for(Cooking aux : cookings){
+        for (Cooking aux : cookings) {
             this.products.addItem(aux);
         }
 
     }
 
+    private void removeCooking(Cooking remove) {
+        Cooking[] newCooking = new Cooking[cookings.length - 1];
+        int k = 0;
+        for (Cooking aux : cookings) {
+            if (!aux.equals(remove)) {
+                newCooking[k] = aux;
+                k++;
+            }
+        }
+        cookings = newCooking;
+    }
+
+    public void updateTextArea(String add) {
+        this.display.append(add + "\n");
+    }
+
     public void Refresh() {
         this.display.setText((String) null);
     }
-    public Cooking[] addCooking(Cooking add){
-        Cooking[] newCooking = new Cooking[this.cookings.length+1];
-        int k=0;
-        for(Cooking aux : this.cookings){
-            newCooking[k]=aux;
+
+    public Cooking[] addCooking(Cooking add) {
+        Cooking[] newCooking = new Cooking[this.cookings.length + 1];
+        int k = 0;
+        for (Cooking aux : this.cookings) {
+            newCooking[k] = aux;
             k++;
         }
         newCooking[this.cookings.length] = add;
@@ -49,12 +74,33 @@ public class CookingPage extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
 
-        this.add = new JButton("ADD");
+        this.add = new JButton("Add/Remove");
         this.add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                insertNewProduct();
-                Add();
+                String[] options = {"Add", "Remove"};
+                int result = JOptionPane.showOptionDialog(
+                        new JFrame(),
+                        "Add or remove an item!",
+                        "Option",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,     //no custom icon
+                        options,  //button titles
+                        options[0] //default button
+                );
+                if (result == JOptionPane.YES_OPTION) {
+                    insertNewProduct();
+                    Add();
+                } else if (result == JOptionPane.NO_OPTION) {
+                    String ing = products.getSelectedItem().toString().split(" ")[0];
+                    Cooking remove = (Cooking) products.getSelectedItem();
+                    searchWords.remove(ing);
+                    removeCooking(remove);
+                    products.removeItem(products.getSelectedItem());
+                    Refresh();
+                    Add();
+                }
             }
         });
         this.add.setBounds(600, 50, 200, 50);
@@ -63,6 +109,34 @@ public class CookingPage extends JFrame {
         this.getContentPane().add(this.add);
 
         this.generate = new JButton("GENERATE");
+        this.generate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!searchWords.isEmpty()) {
+                    String url = "https://www.google.com/search?q=recipe+with";
+                    int k = 0;
+                    for (Map.Entry<String, Integer> entry : searchWords.entrySet()) {
+                        if (k != 0) {
+                            url = url + "+and+" + entry.getKey();
+                        } else {
+                            url = url + "+" + entry.getKey();
+                        }
+                        k++;
+                    }
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(new URI(url));
+                    } catch (IOException | URISyntaxException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    display.setText("");
+                    searchWords.clear();
+                } else {
+                    JOptionPane.showMessageDialog(new JDialog(), "No items selected!", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+
+        });
         this.generate.setBounds(600, 350, 200, 50);
         this.generate.setFont(new Font("Times New Roman", 0, 20));
         this.generate.setBackground(new Color(255, 255, 255));
@@ -78,9 +152,10 @@ public class CookingPage extends JFrame {
         this.display = new JTextArea();
         this.display.setFont(new Font("Times New Roman", 0, 25));
         this.display.setBounds(0, 0, 600, 400);
-        this.display.setBackground(new Color(14, 126, 137));
+        this.display.setBackground(new Color(204, 204, 255));
         this.getContentPane().add(this.display);
         this.Refresh();
+
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -93,13 +168,30 @@ public class CookingPage extends JFrame {
 
         image = new ImageIcon(getClass().getResource("chef.png"));
         labelImage = new JLabel(image);
-        labelImage.setBounds(600,130,200,200);
+        labelImage.setBounds(600, 150, 200, 200);
         getContentPane().add(labelImage);
+
+        JButton addToList = new JButton("Add to list");
+        addToList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ing = products.getSelectedItem().toString().split(" ")[0];
+                System.out.println(ing);
+                if (searchWords.get(ing) == null) {
+                    updateTextArea(ing);
+                }
+                searchWords.put(ing, 1);
+            }
+        });
+        addToList.setBounds(600, 100, 200, 50);
+        addToList.setFont(new Font("Times New Roman", 0, 20));
+        addToList.setBackground(new Color(255, 255, 255));
+        this.getContentPane().add(addToList);
 
         this.setVisible(true);
     }
 
-    public void insertNewProduct(){
+    public void insertNewProduct() {
         JLabel nameLabel = new JLabel("Product name:");
         JTextField name = new JTextField();
 
@@ -112,9 +204,9 @@ public class CookingPage extends JFrame {
         JLabel expireDayLabel = new JLabel("Expiration day:");
         JTextField expireDay = new JTextField();
 
-        JPanel p1 = new JPanel(new GridLayout(2,1));
-        JPanel p2 = new JPanel(new GridLayout(3,2));
-        JPanel p3 = new JPanel(new GridLayout(2,1));
+        JPanel p1 = new JPanel(new GridLayout(2, 1));
+        JPanel p2 = new JPanel(new GridLayout(3, 2));
+        JPanel p3 = new JPanel(new GridLayout(2, 1));
         p1.add(nameLabel);
         p1.add(name);
 
@@ -128,14 +220,15 @@ public class CookingPage extends JFrame {
         p3.add(p1);
         p3.add(p2);
 
-        JOptionPane.showConfirmDialog(null,p3,
-                "Please enter values",JOptionPane.OK_CANCEL_OPTION);
+        JOptionPane.showConfirmDialog(null, p3,
+                "Please enter values", JOptionPane.OK_CANCEL_OPTION);
 
         String nameVal = name.getText();
 
-        if(nameVal.equals("") || expireYear.getText().equals("") ||
-                expireDay.getText().equals("") || expireMonth.getText().equals("")){
+        if (nameVal.equals("") || expireYear.getText().equals("") ||
+                expireDay.getText().equals("") || expireMonth.getText().equals("")) {
             JOptionPane.showMessageDialog(new JDialog(), "EMPTY FIELD!", "ERROR!", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
 
@@ -143,7 +236,7 @@ public class CookingPage extends JFrame {
         int eM = Integer.parseInt(expireMonth.getText());
         int eD = Integer.parseInt(expireDay.getText());
 
-        Cooking newC = new Cooking(nameVal,eD,eY,eM);
+        Cooking newC = new Cooking(nameVal, eD, eY, eM);
         //System.out.println(nameVal +" "+ eY +" "+ eM +" "+ eD);
 
         cookings = addCooking(newC);

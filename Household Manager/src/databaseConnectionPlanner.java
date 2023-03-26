@@ -8,7 +8,7 @@ public class databaseConnectionPlanner {
     private Connection connection;
     private Statement statement;
 
-    databaseConnectionPlanner(){
+    databaseConnectionPlanner() {
 
     }
 
@@ -35,8 +35,7 @@ public class databaseConnectionPlanner {
 
             }
 
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
         return schedule;
@@ -53,12 +52,11 @@ public class databaseConnectionPlanner {
                 for (int j = 8; j < 22; j++) {
                     String putData = "insert into " + tableName +
                             " values('" + i + "','" + (j - 8) +
-                            "','" + schedule[i].text[j-8] + "')";
+                            "','" + schedule[i].text[j - 8] + "')";
                     statement.execute(putData);
                 }
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }

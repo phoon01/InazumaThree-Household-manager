@@ -15,16 +15,19 @@ public class PlannerPage extends JFrame {
     private JLabel label;
     private Day[] emptySchedule = new Day[7];
     private databaseConnectionPlanner plannerData = new databaseConnectionPlanner();
-    PlannerPage(Day[] schedule){
-        createPlanner(this,schedule);
+
+    PlannerPage(Day[] schedule) {
+        createPlanner(this, schedule);
     }
-    PlannerPage(){
-        for(int i=0;i<7;i++){
+
+    PlannerPage() {
+        for (int i = 0; i < 7; i++) {
             emptySchedule[i] = new Day();
         }
-        createPlanner(this,emptySchedule);
+        createPlanner(this, emptySchedule);
     }
-    private void createPlanner(JFrame planner, Day[] schedule){
+
+    private void createPlanner(JFrame planner, Day[] schedule) {
 
         days = new JPanel[7];
 
@@ -32,12 +35,12 @@ public class PlannerPage extends JFrame {
         top = new JPanel(new BorderLayout());
 
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        top.setPreferredSize(new Dimension(screen.width,screen.height/10));
+        top.setPreferredSize(new Dimension(screen.width, screen.height / 10));
 
-        content = new JPanel(new GridLayout(1,7));
+        content = new JPanel(new GridLayout(1, 7));
         page = new JPanel(new BorderLayout());
 
-        for(int i=0;i<7;i++){
+        for (int i = 0; i < 7; i++) {
             content.add(days[i]);
         }
 
@@ -59,15 +62,16 @@ public class PlannerPage extends JFrame {
             }
         });
     }
-    private void initializeTop(){
+
+    private void initializeTop() {
 
         LocalDate monday = LocalDate.now();
-        while(monday.getDayOfWeek() != DayOfWeek.MONDAY){
+        while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
             monday = monday.minusDays(1);
         }
 
         LocalDate sunday = LocalDate.now();
-        while(sunday.getDayOfWeek() != DayOfWeek.SUNDAY){
+        while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
             sunday = sunday.plusDays(1);
         }
 
@@ -76,13 +80,14 @@ public class PlannerPage extends JFrame {
 
         label = new JLabel(weekStart + " - " + weekEnd, SwingConstants.CENTER);
 
-        label.setFont(new Font(label.getFont().getName(), Font.PLAIN,30));
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
         top.add(label, BorderLayout.CENTER);
 
     }
-    private void initializeDays(Day[] schedule){
-        for(int i=0;i<7;i++){
-            days[i] = new JPanel(new GridLayout(15,1));
+
+    private void initializeDays(Day[] schedule) {
+        for (int i = 0; i < 7; i++) {
+            days[i] = new JPanel(new GridLayout(15, 1));
             JLabel dayName = new JLabel("", SwingConstants.CENTER);
             dayName.setFont(new Font(dayName.getFont().getName(), Font.PLAIN, 20));
             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -97,7 +102,7 @@ public class PlannerPage extends JFrame {
                 case 6 -> dayName.setText("Sunday");
             }
             days[i].add(dayName);
-            for(int j=8;j<22;j++) {
+            for (int j = 8; j < 22; j++) {
                 JPanel hoursPanel = new JPanel(new BorderLayout());
                 JLabel hours = new JLabel(j + "-" + (j + 1) + ":");
                 hoursPanel = new JPanel(new BorderLayout());
@@ -128,8 +133,9 @@ public class PlannerPage extends JFrame {
             }
         }
     }
-    private void addOrRemove(int day, int hour, Day[] schedule){
-        String[] options = {"Add activity","Remove activity"};
+
+    private void addOrRemove(int day, int hour, Day[] schedule) {
+        String[] options = {"Add activity", "Remove activity"};
         int result = JOptionPane.showOptionDialog(new JFrame(),
                 "Please select an action!",
                 "Action",
@@ -139,22 +145,20 @@ public class PlannerPage extends JFrame {
                 options,
                 null);
 
-        if(result==JOptionPane.YES_OPTION){
+        if (result == JOptionPane.YES_OPTION) {
             String message = "";
-            if(!schedule[day].text[hour].equals("")){
+            if (!schedule[day].text[hour].equals("")) {
                 message = "Are you sure you want to change the existing activity?\nIf yes, please write new activity.";
-            }
-            else{
+            } else {
                 message = "Please input new activity.";
 
             }
             String changeAct = JOptionPane.showInputDialog(new JFrame(), message);
-            if(changeAct!=null) {
+            if (changeAct != null) {
                 schedule[day].text[hour] = changeAct;
             }
-        }
-        else if(result==JOptionPane.NO_OPTION){
-            schedule[day].text[hour]="";
+        } else if (result == JOptionPane.NO_OPTION) {
+            schedule[day].text[hour] = "";
         }
         new PlannerPage(schedule);
         this.dispose();

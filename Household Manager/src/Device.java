@@ -4,7 +4,8 @@ public class Device {
     private String name;
     private String status;
     private LocalDateTime dateTime;
-    public Device(){
+
+    public Device() {
     }
 
     public String getName() {
@@ -32,7 +33,7 @@ public class Device {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name + "    " + this.status + "    " + this.dateTime.getMonth().toString() + "/" + this.dateTime.getDayOfMonth() + "-" + this.dateTime.getHour() + ":" + this.dateTime.getMinute() + "\n";
     }
 }
