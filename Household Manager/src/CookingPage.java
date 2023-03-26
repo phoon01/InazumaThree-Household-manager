@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -65,6 +66,7 @@ public class CookingPage extends JFrame {
     }
 
     public CookingPage(Cooking[] cooking) {
+        checkForExpiration();
         this.cookings = cooking;
         this.setTitle("COOKING PAGE");
         this.setBounds(0, 0, 400, 775);
@@ -194,6 +196,30 @@ public class CookingPage extends JFrame {
 
         this.setVisible(true);
     }
+    public void checkForExpiration(){
+        Cooking[] check = productsData.getCookingData();
+        String expired = "";
+        String closeExpire = "";
+        for(Cooking aux : check){
+            if(aux.getExpireYear() < LocalDateTime.now().getYear() ||
+                    (aux.getExpireYear() == LocalDateTime.now().getYear() && aux.getExpireMonth()<LocalDateTime.now().getMonthValue()) ||
+                    (aux.getExpireYear() == LocalDateTime.now().getYear() && aux.getExpireMonth()<LocalDateTime.now().getMonthValue() && aux.getExpireDay()<LocalDateTime.now().getDayOfMonth())){
+                expired = expired + aux.toString() + "\n";
+            }
+            if(aux.getExpireYear() == LocalDateTime.now().getYear() &&
+                aux.getExpireMonth() == LocalDateTime.now().getMonthValue() &&
+                aux.getExpireDay()<=LocalDateTime.now().getDayOfMonth()+2 &&
+                    aux.getExpireDay()>LocalDateTime.now().getDayOfMonth()){
+                closeExpire = closeExpire + aux.toString() + "\n";
+            }
+        }
+        String finalText = (expired.equals("") ? "" : ("EXPIRED:\n" + expired + "\n")) +
+                (closeExpire.equals("") ? "" : ("ALMOST EXPIRED:\n" + closeExpire));
+        JTextArea textArea = new JTextArea(finalText);
+        textArea.setEditable(false);
+        JScrollPane sp = new JScrollPane(textArea);
+        JOptionPane.showMessageDialog(new JFrame(),sp);
+    }
 
     public void insertNewProduct() {
         JLabel nameLabel = new JLabel("Product name:");
@@ -239,6 +265,20 @@ public class CookingPage extends JFrame {
         int eY = Integer.parseInt(expireYear.getText());
         int eM = Integer.parseInt(expireMonth.getText());
         int eD = Integer.parseInt(expireDay.getText());
+
+        if(eY > LocalDateTime.now().getYear()+5 ||
+                eM > LocalDateTime.MAX.getMonthValue() || eM < LocalDateTime.MIN.getMonthValue() ||
+                eD > LocalDateTime.MAX.getDayOfMonth() || eD < LocalDateTime.MIN.getDayOfMonth()){
+            JOptionPane.showMessageDialog(new JDialog(), "Wrong expiry date!", "ERROR!", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if(eY < LocalDateTime.now().getYear() ||
+                (eY == LocalDateTime.now().getYear() && eM<LocalDateTime.now().getMonthValue()) ||
+                (eY == LocalDateTime.now().getYear() && eM<LocalDateTime.now().getMonthValue() && eD<LocalDateTime.now().getDayOfMonth())){
+            JOptionPane.showMessageDialog(new JDialog(), "Wrong expiry date!", "ERROR!", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         Cooking newC = new Cooking(nameVal, eD, eY, eM);
         //System.out.println(nameVal +" "+ eY +" "+ eM +" "+ eD);

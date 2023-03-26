@@ -34,7 +34,7 @@ public class Device {
 
     @Override
     public String toString() {
-        return this.name + "    " + this.status + "    " + this.dateTime.getMonth().toString() + "/" + this.dateTime.getDayOfMonth() + "-" + this.dateTime.getHour() + ":" + this.dateTime.getMinute() + "\n";
+        return this.name + "\t" + this.status + "\t" + this.dateTime.getMonth().toString() + "/" + this.dateTime.getDayOfMonth() + "-" + this.dateTime.getHour() + ":" + this.dateTime.getMinute() + "\n";
     }
 }
 

@@ -19,6 +19,7 @@ public class DevicePage extends JFrame {
     private JScrollPane scrollPane;
     private Device[] memory;
     private databaseConnectionDevices devicesData = new databaseConnectionDevices();
+    String text = "a\n\n\n\n\n\n\n\n\naaaa\n\n\n\n\n1\n\n\n\n\n\n\n\n\n\n234";
 
     public static int SearchByName(String txt, Device[] devices) {
         for (int i = 0; i < devices.length; i++) {
